@@ -5,4 +5,4 @@ It features:
 * Re-GPLed
 * Other things
 
-If you are upgrading from an older version make sure you copy across the new settings from config.php-dist othehrwise stuff will probably break.
+If you are upgrading from an older version make sure you copy across the new settings from config.php-dist otherwise stuff will probably break.
