@@ -1,0 +1,62 @@
+<?php
+
+/**
+ *
+ * The configuration file.
+ * Use the following variables to change settings for schoolbulletin.
+ * 
+ * Copyright (c) 2003-2005 Chris Goerner
+ * Copyright (c) 2012-2013 Daniel Jolly
+ * Copyright (c) 2015 Scott Panton
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ **/
+
+
+error_reporting(E_ALL);
+
+//DATABASE SETTINGS
+$db_server = 'localhost';						//The name of your MySQL sever
+$db_user = 'bulletin';							//The user account
+$db_password = 'hunter2';						//The password for that account
+$db_database = 'bulletin';						//The database name
+$db_table_prefix = 'sb_';						//String prepended to table names e.g. "sb_"
+
+//PAGE SETTINGS
+$page_logo = "images/logo.png";					//Location of logo image
+$page_title = "School Bulletin";				//String used as the page title
+$page_bgcolour = "#FAFAFA";						//The background colour of all pages
+$table_heading_bgcolour = "#D4DCE2";			//Table heading background colour
+$table_bgcolour = "#EEEEEE";					//Table background colour
+
+//FOOTER SETTINGS
+$show_pagetime = false;
+$show_update_time = true;
+$show_server_software = false;
+$show_server_name = false;
+
+
+
+//You probably won't need to change anything below this line
+														
+$app_version = '0.2';
+$app_name = 'schoolbulletin';
+
+$importance_table = $db_table_prefix . "importance";
+$notices_table = $db_table_prefix . "notices";
+$permissions_table = $db_table_prefix . "permissions";
+$users_table = $db_table_prefix . "users";
+$events_table = $db_table_prefix . "events";
+
+?>

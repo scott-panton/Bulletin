@@ -69,17 +69,6 @@ CREATE TABLE `sb_permissions` (
 ) AUTO_INCREMENT=1 ;
 
 #
-# Table structure for table `settings`
-#
-
-CREATE TABLE `sb_settings` (
-  `ID` int(11) NOT NULL auto_increment,
-  `name` text NOT NULL,
-  `value` text NOT NULL,
-  PRIMARY KEY  (`ID`)
-) AUTO_INCREMENT=1 ;
-
-#
 # Table structure for table `users`
 #
 

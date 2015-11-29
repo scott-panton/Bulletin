@@ -1,6 +1,8 @@
-This is a fork of cgoerner's Bulletin (http://sourceforge.net/projects/schoolreports)
+This is a fork of djcode's fork of cgoerner's Bulletin (http://sourceforge.net/projects/schoolreports)
 It features:
-* Better compatibility with PHP 5!
-* Fixes problems with quotes in notices!
-* Cookie support!
-* Other things I haven't thought of!
+* Less typos
+* Auto-refresh
+* Re-GPLed
+* Other things
+
+If you are upgrading from an older version make sure you copy across the new settings from config.php-dist othehrwise stuff will probably break.

@@ -1,20 +1,30 @@
 <?php
 
 /**
- * schoolbulletin: index.php
  * 
  * The client user interface.
  * 
- * @author Chris Goerner <cgoerner@users.sourceforge.net>
- * @version $Id: index.php,v 1.11 2005/04/10 03:36:28 cgoerner Exp $
- * @version $Revision: 1.11 $
+ * Copyright (c) 2003-2005 Chris Goerner
+ * Copyright (c) 2012-2013 Daniel Jolly
+ * Copyright (c) 2015 Scott Panton
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  **/
 
 include 'config.php';
 include 'db_connect.php';
 include 'core.php';
-include 'read_settings.php';
 
 global $PHP_SELF;
 
@@ -45,9 +55,9 @@ if (getVAR("username")) {
     $password = md5(getVAR("txtpassword"));
 }
 
-echo "\n<table width=100%><tr><td width=90%>";
 
-SendPageHeader();
+SendPageHeader($username,$password);
+echo "\n<table width=100%><tr><td width=90%>";
 SendPageTitle();
 
 echo "\n</td>";
@@ -96,7 +106,7 @@ if (authenticate($username,$password)) {
 echo "</tr></table>";
 
 if (authenticate($username,$password)) {
-	sendNavBar(array("previous","logout","home","absentees","create_notice","add_event","edit","next"),$username,$password,$display_date);
+	sendNavBar(array("previous","logout","home","create_notice","add_event","edit","next"),$username,$password,$display_date);
 }
 
 echo "\n<table width=100%><tr><td width=75% bgcolor=$table_bgcolour valign=top>";
@@ -407,7 +417,7 @@ if (!authenticate($username,$password)) {
 	} // switch
 
 	
-	echo "\n<h2>Notices for ".date("l \\t\h\e jS \of F",$display_date)."</h2>";
+	echo "\n<h2>Notices for ".date("l \\t\h\\e jS \of F",$display_date)."</h2>";
 	
 	$query = "SELECT * FROM $notices_table WHERE display_date='".date("Y-m-d",$display_date)."' ORDER BY date_added";
 	//echo $query."<br>";
@@ -437,7 +447,7 @@ if (!authenticate($username,$password)) {
 			}
 			echo "\n<br>".formattext($row["notice"]);
 			echo "\n</font>";
-			echo "\n<br><small><i>Created by ".$row["author"]." on ".date("l \\t\h\e jS \o\f F \a\\t g:ia",strtotime($row["date_added"]))."</i></small><p>";
+			echo "\n<br><small><i>Created by ".$row["author"]." on ".date("l \\t\h\\e jS \of F \a\\t g:ia",strtotime($row["date_added"]))."</i></small><p>";
 		} //if
 	} //while
 	
@@ -490,7 +500,7 @@ echo "\n</td></tr>";
 echo "\n</table>";
 
 if (authenticate($username,$password)) {
-	sendNavBar(array("previous","logout","home","absentees","create_notice","add_event","edit","next"),$username,$password,$display_date);
+	sendNavBar(array("previous","logout","home","create_notice","add_event","edit","next"),$username,$password,$display_date);
 }
 
 if ($username=="admin") {

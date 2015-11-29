@@ -1,14 +1,25 @@
 <?php
 
 /**
- * OSIC: db_connect.php
  * 
  * The database connection script.
  * Use config.php to change settings.
  * 
- * @author Chris Goerner <cgoerner@users.sourceforge.net>
- * @version $Id: db_connect.php,v 1.1 2004/03/19 08:59:04 cgoerner Exp $
- * @version $Revision: 1.1 $
+ * Copyright (c) 2003-2005 Chris Goerner
+ * Copyright (c) 2012-2013 Daniel Jolly
+ * Copyright (c) 2015 Scott Panton
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  **/
 

@@ -1,13 +1,24 @@
 <?php
 
 /**
- * OSIC: core.php
  * 
  * This file contains functions common to all other source files.
+ *
+ * Copyright (c) 2003-2005 Chris Goerner
+ * Copyright (c) 2012-2013 Daniel Jolly
+ * Copyright (c) 2015 Scott Panton
  * 
- * @author Chris Goerner <cgoerner@users.sourceforge.net>
- * @version $Id: core.php,v 1.4 2005/04/10 03:36:28 cgoerner Exp $
- * @version $Revision: 1.4 $
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  **/
  
@@ -26,10 +37,47 @@ function getmicrotime()
 /**
  * Sends HTML header
  **/
-function SendPageHeader()
+function SendPageHeader($username,$password)
 {
-    global $page_bgcolour, $page_heading;
-    echo("<HTML><HEAD><TITLE>$page_heading</TITLE><STYLE type=\"text/css\"><!--BODY{background-color:" . $page_bgcolour . ";font-family:verdana,sans-serif;font-size:9pt}TABLE{font-family:verdana,sans-serif;font-size:8pt}PRE{font-family:sans-serif}--></STYLE></HEAD>");
+    global $page_bgcolour, $page_title;
+    echo("<!DOCTYPE html><HTML><HEAD><TITLE>$page_title</TITLE>
+	<STYLE type=\"text/css\">
+	BODY{
+	background-color:\"$page_bgcolour\";
+	font-family:verdana,sans-serif;
+	font-size:9pt
+	}
+	TABLE{
+		font-family:verdana,sans-serif;
+		font-size:8pt
+	}
+	PRE{
+		font-family:sans-serif
+	}
+	</STYLE>
+	<!--Nicked from http://stackoverflow.com/a/15279599-->
+	<script type=\"text/javascript\">
+	var refresh_rate = 300; //In seconds
+	var last_user_action = 0;
+	function reset() {
+		last_user_action = 0;
+		console.log(\"Reset\");
+	}
+	setInterval(function () {
+		last_user_action++;
+		refreshCheck();
+	}, 1000);
+	function refreshCheck() {
+		if ((last_user_action >= refresh_rate && document.readyState == \"complete\")) {
+			window.location.href = \"$PHP_SELF?username=$username&password=$password\"; // If this is called no reset is needed
+			reset(); // We want to reset just to make sure the location reload is not called.
+		}
+	}
+	window.addEventListener(\"click\", reset, false);
+	window.addEventListener(\"mousemove\", reset, false);
+	window.addEventListener(\"keypress\", reset, false);
+	</script>
+	</HEAD>");
     echo("<BODY>");
 } 
 
@@ -38,12 +86,14 @@ function SendPageHeader()
  **/
 function SendPageFooter()
 {
-    global $app_version, $app_name, $time_start, $show_server_software, $show_server_name;
+    global $app_version, $app_name, $time_start, $show_server_software, $show_server_name, $show_update_time;
     $time_end = getmicrotime();
     $time = $time_end - $time_start;
-    echo "<small><p><a href=\"http://schoolreports.sourceforge.net/\">$app_name</a> " . $app_version;
-    echo "<br>" . number_format($time, 3) . " seconds elapsed.";
+    echo "<small><p><a href=\"https://github.com/scott-panton/Bulletin\">$app_name</a> " . $app_version;
     
+	if ($show_pagetime) {
+	    echo "<br>" . number_format($time, 3) . " seconds elapsed.";
+    	}
 	if ($show_server_software) {
 	    echo "<br>".$_SERVER["SERVER_SOFTWARE"]." ";
 	}
@@ -51,16 +101,20 @@ function SendPageFooter()
 	    echo "<br>Running on ".$_SERVER["SERVER_NAME"];
 	}
 	
+	if ($show_update_time) {
+		$current_time = date("D g:ia");
+		echo "<br>Page updated: $current_time"; 
+	}
 	echo "</small></BODY></HTML>";
 } 
 
 /**
- * Sends page title enclosed in <h1></h1>
+ * Sends page logo
  **/
 function SendPageTitle()
 {
-    global $page_title;
-    echo("<h1>$page_title</h1>");
+    global $page_logo;
+    echo("<img border=\"0\" src=\"$page_logo\"></img>");
 } 
 
 /**
@@ -189,26 +243,10 @@ function sendNavBar($links,$username,$password,$display_date) {
 			case "manage_users": 
 				echo "<td align=center><a href=\"$PHP_SELF?action=manage_users&username=$username&password=$password\">Manage Users</a></td>";
 				break;
-			case "absentees": 
-				echo "<td align=center><a href=\"http://intranet/a\"><font color=red>Absentees</font></a></td>";
-				break;
 			
 		} // switch
 	} // foreach
 	echo "</tr></table>";
-}
-
-function getSetting($setting_name, $default_value) {
-	global $settings_table;
-	
-	$result = do_mysql_query("SELECT * FROM $settings_table WHERE name='$setting_name'");
-    $row = mysql_fetch_array($result);
-	
-	$val = $row["value"];
-	if ($val=="") {
-	    $val = $default_value;
-	}
-	return $val;
 }
 
 function setSetting($setting_name, $setting_value) {
@@ -300,7 +338,7 @@ function getDateList($multi=true,$default) {
 		$tempdate  = mktime (0,0,0,date("m")  ,date("d")+$i,date("Y"));
 		if (date("l",$tempdate)!="Saturday" AND date("l",$tempdate)!="Sunday") {
 			if ($tempdate == $default) { $selected="selected"; } else { $selected=""; } 
-			$tempOutput .= "<option value=\"$tempdate\" $selected>".date("l \\t\h\e jS \of F",$tempdate)."</option>";
+			$tempOutput .= "<option value=\"$tempdate\" $selected>".date("l \\t\h\\e jS \of F",$tempdate)."</option>";
 		}
 	}
 
